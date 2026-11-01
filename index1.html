@@ -283,7 +283,6 @@ footer b{font-family:var(--display);font-size:18px;color:var(--snow)}
     <div id="menu"></div>
     <p class="rules">
       <span><b>Заказы:</b> за 2–3 дня</span>
-      <span><b>Блинчики:</b> от 20 штук</span>
       <span><b>Доставка:</b> по тарифу такси или самовывоз</span>
     </p>
   </div>
@@ -299,7 +298,7 @@ footer b{font-family:var(--display);font-size:18px;color:var(--snow)}
       <div class="col">
         <span class="num">ШАГ 1</span>
         <h3>Соберите корзину</h3>
-        <p>Выберите блюда и вес. Блюда на вес добавляются по килограмму, блинчики от 20 штук. Если нужно другое количество, напишите об этом в сообщении.</p>
+        <p>Выберите блюда и вес. Блюда на вес добавляются по килограмму. Если нужно другое количество, напишите об этом в сообщении.</p>
       </div>
       <div class="col">
         <span class="num">ШАГ 2</span>
@@ -456,9 +455,9 @@ footer b{font-family:var(--display);font-size:18px;color:var(--snow)}
     one('kotlety',  'meat', 'Куриные котлеты', 650),
 
     dish('blini', 'pancakes', 'Блинчики', [
-      pv('blini-plain',   'Без начинки', 'Блинчики без начинки', 35, '.', 20, 5),
-      pv('blini-meat',    'С мясом',     'Блинчики с мясом', 70, '.', 20, 5),
-      pv('blini-cottage', 'С творогом',  'Блинчики с творогом', 60, '.', 20, 5)
+      pv('blini-plain',   'Без начинки', 'Блинчики без начинки', 35, '', 20, 5),
+      pv('blini-meat',    'С мясом',     'Блинчики с мясом', 70, .', 20, 5),
+      pv('blini-cottage', 'С творогом',  'Блинчики с творогом', 60, '', 20, 5)
     ]),
 
     dish('chudu', 'hot', 'Чуду', [
