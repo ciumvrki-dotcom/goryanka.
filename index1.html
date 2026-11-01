@@ -401,7 +401,7 @@ footer b{font-family:var(--display);font-size:18px;color:var(--snow)}
 
   var PHONE = '79267383875';              // номер для ссылок WhatsApp и Telegram
   var TG_USER = '';                       // имя в Telegram без @, например 'goryanka'. С ним готовый текст подставляется надёжнее
-  var STORE_KEY = 'goryanka-cart-v3';
+  var STORE_KEY = 'goryanka-cart-v4';
   var MAX_QTY = 99;
 
   var CATS = [
@@ -455,9 +455,9 @@ footer b{font-family:var(--display);font-size:18px;color:var(--snow)}
     one('kotlety',  'meat', 'Куриные котлеты', 650),
 
     dish('blini', 'pancakes', 'Блинчики', [
-      pv('blini-plain',   'Без начинки', 'Блинчики без начинки', 35, '', 20, 5),
-      pv('blini-meat',    'С мясом',     'Блинчики с мясом', 70, .', 20, 5),
-      pv('blini-cottage', 'С творогом',  'Блинчики с творогом', 60, '', 20, 5)
+      pv('blini-plain',   'Без начинки', 'Блинчики без начинки', 35, '', 1, 1),
+      pv('blini-meat',    'С мясом',     'Блинчики с мясом', 70, '', 1, 1),
+      pv('blini-cottage', 'С творогом',  'Блинчики с творогом', 60, '', 1, 1)
     ]),
 
     dish('chudu', 'hot', 'Чуду', [
@@ -481,7 +481,7 @@ footer b{font-family:var(--display);font-size:18px;color:var(--snow)}
     dish('cake', 'sweet', 'Торты на заказ', [{
       id: 'cake', label: '', full: 'Торт', desc: 'С разными начинками и разным декором. Декор оплачивается отдельно.',
       price: 0, unit: 'kg', min: 1, step: 1, inquire: true,
-      priceText: 'от 2 000 ₽', unitText: '/ кг'
+      priceText: 'от 2 000 ₽', unitText: '/ кг'
     }])
   ];
 
@@ -494,9 +494,9 @@ footer b{font-family:var(--display);font-size:18px;color:var(--snow)}
 
   function $(id) { return document.getElementById(id); }
   function num(n) { return n.toLocaleString('ru-RU'); }
-  function rub(n) { return num(n) + ' ₽'; }
+  function rub(n) { return num(n) + ' ₽'; }
   function unitLabel(v) { return v.unit === 'kg' ? 'кг' : 'шт'; }
-  function fmtQty(v, q) { return num(q) + ' ' + unitLabel(v); }
+  function fmtQty(v, q) { return num(q) + ' ' + unitLabel(v); }
 
   /* ---------- состояние ---------- */
   var cart = load();
@@ -590,7 +590,7 @@ footer b{font-family:var(--display);font-size:18px;color:var(--snow)}
       var v = V[id], q = cart[id];
       return '<li class="line">' +
         '<div class="line-top"><div><div class="line-name">' + v.full + '</div>' +
-        '<div class="line-w">' + rub(v.price) + ' / ' + unitLabel(v) + '</div></div>' +
+        '<div class="line-w">' + rub(v.price) + ' / ' + unitLabel(v) + '</div></div>' +
         '<div class="line-sum">' + rub(v.price * q) + '</div></div>' +
         '<div class="line-bot">' + stepHTML(v, q, 'dec', 'inc', 'data-id="' + id + '"') +
         '<button class="link" type="button" data-act="remove" data-id="' + id + '">Убрать</button></div>' +
