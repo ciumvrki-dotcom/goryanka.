@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Горянка</title>
+<meta name="description" content="Горянка: домашняя еда ручной работы. Манты, пельмени, курзе, долма, чуду, кутабы, салаты и торты на заказ.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Onest:wght@400;500;600&display=swap">
+<style>
+:root{
+  --snow:#F2F4F1; --white:#FFFFFF; --pine:#14312B; --pine-2:#1F4239;
+  --amber:#F29A1F; --stone:#E1E8E3; --line:#D3DBD6; --muted:#3D5A52; --soft:#D5DDD8;
+  --display:'Unbounded','Arial Black',sans-serif;
+  --body:'Onest',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--snow);color:var(--pine);font-family:var(--body);line-height:1.5;-webkit-text-size-adjust:100%}
+a{color:inherit;text-decoration:none}
+a:hover{opacity:.82}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.wrap{max-width:1280px;margin:0 auto;padding-left:max(clamp(20px,4vw,56px),env(safe-area-inset-left,0px));padding-right:max(clamp(20px,4vw,56px),env(safe-area-inset-right,0px))}
+.eyebrow{font-size:14px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1,h2,h3,h4{font-family:var(--display);margin:0;text-wrap:balance}
+h2{font-weight:600;font-size:clamp(26px,3.6vw,46px);line-height:1.1;letter-spacing:-.015em}
+h3,h4{font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 28px;border:0;border-radius:2px;background:var(--amber);color:var(--pine);font-weight:600;font-size:17px}
+.btn:hover{opacity:.88}
+.btn.ghost{background:transparent;border:1.5px solid currentColor;color:inherit}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:20;background:var(--pine);color:var(--snow);padding-top:env(safe-area-inset-top,0px)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px 28px;min-height:68px}
+.logo{display:flex;align-items:center;gap:12px;font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.01em}
+.nav{display:flex;gap:8px 28px;font-weight:500}
+.cartbtn{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 18px;border:1.5px solid var(--snow);border-radius:2px;background:transparent;color:var(--snow);font-weight:600}
+.cartbtn .count{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:12px;background:var(--amber);color:var(--pine);font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+.cartbtn .count[data-zero="true"]{background:transparent;color:var(--soft);border:1px solid var(--soft)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:var(--pine);color:var(--snow)}
+.scene{position:absolute;left:0;right:0;bottom:0;width:100%;height:560px;display:block}
+/* цвета фигур задаются переменными: в шапке цветные, в «О нас» одним тоном */
+.f-dress{fill:var(--dress,#F2F4F1)}
+.f-sleeve{fill:var(--sleeve,var(--dress,#F2F4F1))}
+.f-scarf{fill:var(--scarf,#F29A1F)}
+.f-shawl{fill:var(--shawl,var(--scarf,#F29A1F))}
+.f-skin{fill:var(--skin,#E3B38F)}
+.f-item{fill:var(--item,#C9563A)}
+.f-trim{fill:none;stroke:var(--trim,#C9563A);stroke-width:3;stroke-linecap:round}
+.f-wood{fill:none;stroke:var(--wood,#9A7A52);stroke-width:3;stroke-linecap:round}
+.f-line{fill:none;stroke:var(--line,rgba(0,0,0,.25));stroke-width:1.5}
+.f-shadow{fill:var(--shadow,rgba(0,0,0,.28))}
+.hero .wrap{position:relative;padding-top:72px;padding-bottom:270px}
+.hero-inner{display:flex;flex-direction:column;gap:28px;max-width:900px}
+.hero .eyebrow{color:var(--amber)}
+.hero h1{font-weight:600;font-size:clamp(32px,6vw,84px);line-height:1.04;letter-spacing:-.02em}
+.hero p{margin:0;max-width:560px;font-size:20px;color:var(--soft)}
+.actions{display:flex;flex-wrap:wrap;gap:14px}
+
+/* menu */
+.section{padding-block:80px}
+.head{display:flex;flex-direction:column;gap:14px;max-width:680px;margin-bottom:36px}
+.head p{margin:0;font-size:18px;color:var(--muted)}
+.jump{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:48px}
+.cat+.cat{margin-top:56px}
+.cat-title{font-size:clamp(20px,2.4vw,26px);padding-bottom:12px;margin-bottom:24px;border-bottom:3px solid var(--pine)}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:20px}
+.card{min-width:0;display:flex;flex-direction:column;gap:10px;padding:22px;background:var(--white);border:1px solid var(--line);border-radius:2px}
+.card h4{font-size:19px;line-height:1.25;letter-spacing:-.005em}
+.card .desc{margin:0;font-size:15.5px;color:var(--muted);flex-grow:1}
+.buy{display:flex;flex-direction:column;gap:12px;padding-top:14px;border-top:1px solid var(--line)}
+.ctl{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.incart{margin:0;font-size:14px;color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.vars{display:flex;flex-wrap:wrap;gap:8px;border:0;padding:0;margin:0;min-width:0}
+.vchip{position:relative;display:inline-flex;cursor:pointer}
+.vchip input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.vchip span{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1.5px solid var(--pine);border-radius:2px;background:transparent;font-size:15px;font-weight:600}
+.vchip:hover span{background:var(--stone)}
+.vchip input:checked+span,.vchip:hover input:checked+span{background:var(--pine);color:var(--snow)}
+.vchip input:focus-visible+span{outline:3px solid var(--amber);outline-offset:2px}
+.price{font-family:var(--display);font-weight:600;font-size:22px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.price small{font-family:var(--body);font-weight:500;font-size:14px;color:var(--muted)}
+.price-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px}
+.price-unit{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.card .btn{min-height:46px;padding:0 20px;font-size:16px}
+.step{display:inline-flex;align-items:center;border:1.5px solid var(--pine);border-radius:2px}
+.step button{width:46px;height:44px;border:0;background:transparent;font-size:22px;line-height:1}
+.step button:hover{background:var(--stone)}
+.step button[aria-disabled="true"]{opacity:.35;cursor:not-allowed}
+.step button[aria-disabled="true"]:hover{background:transparent}
+.step output{min-width:64px;padding:0 4px;text-align:center;font-weight:600;font-size:16px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rules{display:flex;flex-wrap:wrap;gap:10px 32px;margin:56px 0 0;padding:20px 24px;background:var(--stone);font-size:16px}
+.rules b{font-weight:600}
+
+/* columns */
+.alt{background:var(--stone)}
+.cols{display:flex;flex-wrap:wrap;gap:40px 48px}
+.col{flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:3px solid var(--pine)}
+.col h3{font-size:20px}
+.col p{margin:0;font-size:17px}
+.col p.muted{color:var(--muted)}
+.num{font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:.1em;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:1.5px solid var(--pine);border-radius:2px;font-weight:600}
+.chip:hover{background:var(--pine);color:var(--snow);opacity:1}
+
+/* about */
+.about{position:relative;overflow:hidden;background:var(--pine);color:var(--snow);padding-block:96px}
+.about .scene{height:300px}
+.about .eyebrow{color:var(--amber)}
+.about .wrap{position:relative;display:flex;flex-direction:column;gap:32px}
+.about .lead{margin:0;max-width:980px;font-family:var(--display);font-weight:500;font-size:clamp(22px,3.2vw,42px);line-height:1.25;letter-spacing:-.01em;text-wrap:pretty}
+.about .sub{margin:0;max-width:640px;font-size:17px;color:#B9C6BF}
+
+footer{background:var(--pine);color:var(--soft);font-size:15px}
+footer .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-block:32px calc(32px + env(safe-area-inset-bottom,0px))}
+footer b{font-family:var(--display);font-size:18px;color:var(--snow)}
+
+/* drawer */
+.scrim{position:fixed;inset:0;z-index:40;background:rgba(10,24,20,.55);opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+.scrim.open{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;bottom:0;z-index:50;width:min(440px,100%);display:flex;flex-direction:column;background:var(--snow);color:var(--pine);box-shadow:-8px 0 32px rgba(10,24,20,.25);transform:translateX(100%);visibility:hidden;transition:transform .25s ease,visibility .25s}
+.drawer.open{transform:none;visibility:visible}
+.d-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(20px + env(safe-area-inset-top,0px)) 24px 16px;border-bottom:1px solid var(--line)}
+.d-head h2{font-size:22px;letter-spacing:-.01em}
+.x{width:44px;height:44px;display:grid;place-items:center;border:0;background:transparent;font-size:28px;line-height:1}
+.x:hover{background:var(--stone)}
+.d-body{flex:1;overflow-y:auto;padding:8px 24px 24px;display:flex;flex-direction:column}
+.d-foot{padding:16px 24px calc(20px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;flex-direction:column;gap:12px;background:var(--white)}
+.lines{list-style:none;margin:0;padding:0}
+.line{display:flex;flex-direction:column;gap:10px;padding:16px 0;border-bottom:1px solid var(--line)}
+.line-top{display:flex;justify-content:space-between;gap:12px}
+.line-name{font-weight:600}
+.line-w{font-size:14px;color:var(--muted)}
+.line-sum{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.line-bot{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.link{border:0;background:transparent;padding:10px 0;font-size:15px;color:var(--muted);text-decoration:underline}
+.empty{margin:48px 0;text-align:center;color:var(--muted);display:flex;flex-direction:column;gap:16px;align-items:center}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.total span:first-child{font-size:15px;color:var(--muted)}
+.total strong{font-family:var(--display);font-size:24px;font-variant-numeric:tabular-nums}
+.note{margin:0;font-size:13.5px;color:var(--muted)}
+.send-title{margin:4px 0 0;font-size:14px;font-weight:600}
+.field{display:flex;flex-direction:column;gap:6px;margin-top:16px;border:0;padding:0;min-width:0}
+.field label,.field legend{font-size:14px;font-weight:600;padding:0}
+.field input[type=text],.field input[type=tel],.field input[type=date],.field textarea{width:100%;min-height:48px;padding:10px 12px;border:1.5px solid #9DAFA6;border-radius:2px;background:var(--white);color:var(--pine);font:inherit}
+.field textarea{min-height:84px;resize:vertical}
+.radio{display:flex;align-items:center;gap:10px;min-height:44px;font-size:16px;font-weight:400}
+.radio input{width:20px;height:20px;margin:0;accent-color:var(--pine)}
+.hint{margin:12px 0 0;font-size:14px;color:var(--muted)}
+.ordertext{width:100%;min-height:230px;margin-top:16px;padding:12px;border:1.5px solid #9DAFA6;border-radius:2px;background:var(--white);color:var(--pine);font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;resize:vertical}
+.stack{display:flex;flex-direction:column;gap:12px}
+.status{min-height:22px;font-size:14px;color:var(--muted)}
+
+@media (max-width:1100px){
+  .scene{height:420px}
+  .hero .wrap{padding-bottom:300px}
+}
+@media (max-width:720px){
+  .scene{height:340px}
+  .nav{display:none}
+  .cartbtn .label{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .drawer,.scrim{transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Три горянки: с кувшином на голове, с корзиной за спиной и с посохом. Ноги стоят в точке 0,0 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <g id="wA">
+      <ellipse class="f-shadow" cx="0" cy="2" rx="30" ry="4"/>
+      <path class="f-dress" d="M-11 -112 Q0 -118 11 -112 L9 -80 Q18 -40 27 0 Q0 5 -27 0 Q-18 -40 -9 -80 Z"/>
+      <path class="f-trim" d="M-25 -9 Q0 -4 25 -9"/>
+      <path class="f-trim" d="M-8.6 -82 Q0 -79 8.6 -82"/>
+      <path class="f-sleeve" d="M8 -112 L17 -134 L13 -146 L8 -144 L11 -133 L3 -110 Z"/>
+      <circle class="f-skin" cx="11" cy="-146" r="3.2"/>
+      <path class="f-item" d="M-6 -141 L-10 -153 Q-11 -163 -4 -167 L-3 -172 L3 -172 L4 -167 Q11 -163 10 -153 L6 -141 Z"/>
+      <path class="f-scarf" d="M-9.5 -124 Q-11 -141 0 -142 Q11 -141 9.5 -124 L13 -110 Q0 -116 -13 -110 Z"/>
+      <ellipse class="f-skin" cx="0" cy="-125" rx="5" ry="6.5"/>
+    </g>
+    <g id="wB">
+      <ellipse class="f-shadow" cx="0" cy="2" rx="30" ry="4"/>
+      <path class="f-item" d="M8 -112 Q31 -118 33 -92 Q33 -72 12 -75 Z"/>
+      <path class="f-line" d="M14 -102 L31 -100 M13 -92 L32 -90 M13 -83 L28 -82"/>
+      <path class="f-dress" d="M-11 -112 Q0 -118 11 -112 L9 -80 Q18 -40 26 0 Q0 5 -26 0 Q-18 -40 -9 -80 Z"/>
+      <path class="f-trim" d="M-24 -9 Q0 -4 24 -9"/>
+      <path class="f-trim" d="M-8.6 -82 Q0 -79 8.6 -82"/>
+      <path class="f-sleeve" d="M-10 -111 L-15 -84 L-11 -83 L-7 -102 Z"/>
+      <circle class="f-skin" cx="-13" cy="-82" r="3.2"/>
+      <path class="f-scarf" d="M-9.5 -124 Q-11 -141 0 -142 Q11 -141 9.5 -124 L13 -110 Q0 -116 -13 -110 Z"/>
+      <ellipse class="f-skin" cx="0" cy="-125" rx="5" ry="6.5"/>
+    </g>
+    <g id="wC">
+      <ellipse class="f-shadow" cx="0" cy="2" rx="30" ry="4"/>
+      <path class="f-wood" d="M20 -150 L22 2"/>
+      <path class="f-dress" d="M-11 -112 Q0 -118 11 -112 L9 -80 Q18 -40 27 0 Q0 5 -27 0 Q-18 -40 -9 -80 Z"/>
+      <path class="f-trim" d="M-25 -9 Q0 -4 25 -9"/>
+      <path class="f-shawl" d="M-13 -112 Q0 -104 13 -112 L10 -96 Q0 -90 -10 -96 Z"/>
+      <path class="f-sleeve" d="M9 -112 L19 -96 L16 -93 L7 -105 Z"/>
+      <circle class="f-skin" cx="19" cy="-95" r="3.2"/>
+      <path class="f-scarf" d="M-9.5 -124 Q-11 -141 0 -142 Q11 -141 9.5 -124 L13 -110 Q0 -116 -13 -110 Z"/>
+      <ellipse class="f-skin" cx="0" cy="-125" rx="5" ry="6.5"/>
+    </g>
+  </defs>
+</svg>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Горянка, на главную">
+      <svg aria-hidden="true" width="36" height="26" viewBox="0 0 34 24"><path d="M0 24 L11 4 L18 15 L23 8 L34 24 Z" fill="#F29A1F"/></svg>
+      <span>Горянка</span>
+    </a>
+    <nav class="nav" aria-label="Разделы сайта">
+      <a href="#catalog">Меню</a>
+      <a href="#serve">Как заказать</a>
+      <a href="#about">О нас</a>
+      <a href="#buy">Контакты</a>
+    </nav>
+    <button class="cartbtn" id="openCart" type="button" aria-haspopup="dialog" aria-controls="drawer">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2.2l2.1 10.2a1 1 0 0 0 1 .8h8.4a1 1 0 0 0 1-.76L19.5 8H6.1"/><circle cx="9.5" cy="19.2" r="1.3"/><circle cx="16.5" cy="19.2" r="1.3"/></svg>
+      <span class="label">Корзина</span>
+      <span class="count" id="count" data-zero="true">0</span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero">
+  <svg class="scene" aria-hidden="true" focusable="false" viewBox="0 0 1440 560" preserveAspectRatio="xMaxYMax slice">
+    <circle cx="1130" cy="230" r="150" fill="#F29A1F"/>
+    <!-- дальний хребет -->
+    <path fill="#1B3A32" d="M0 560 L0 330 L90 290 L170 330 L270 250 L350 310 L450 270 L540 330 L650 240 L740 300 L840 200 L930 270 L1010 170 L1090 250 L1170 130 L1260 240 L1330 190 L1440 260 L1440 560 Z"/>
+    <g fill="#E4ECE7" opacity=".92">
+      <path d="M1170 130 L1140 175 L1156 166 L1170 184 L1186 167 L1207 176 Z"/>
+      <path d="M1010 170 L978 210 L994 202 L1010 218 L1026 203 L1048 208 Z"/>
+      <path d="M840 200 L805 235 L822 227 L840 243 L858 228 L882 233 Z"/>
+      <path d="M1330 190 L1295 215 L1312 210 L1330 224 L1348 211 L1366 213 Z"/>
+    </g>
+    <!-- средний хребет -->
+    <path fill="#22463C" d="M0 560 L0 420 L120 385 L230 420 L360 370 L470 415 L600 380 L720 425 L850 360 L960 415 L1070 365 L1180 420 L1290 380 L1440 425 L1440 560 Z"/>
+    <!-- склон, на котором стоят горянки -->
+    <path fill="#2C5246" d="M0 560 L0 450 C250 430 480 470 760 450 C980 432 1200 425 1440 430 L1440 560 Z"/>
+    <use href="#wA" transform="translate(1075 440)" style="--dress:#F2F4F1;--scarf:#F29A1F;--trim:#D9593B;--item:#C9563A"/>
+    <use href="#wB" transform="translate(1165 438) scale(.94)" style="--dress:#D9593B;--scarf:#F2F4F1;--trim:#F29A1F;--item:#D9B45A"/>
+    <use href="#wC" transform="translate(1255 436) scale(.98)" style="--dress:#8DBFAE;--scarf:#F29A1F;--trim:#F2F4F1;--shawl:#D9593B"/>
+    <use href="#wA" transform="translate(1315 440) scale(.5)" style="--dress:#F29A1F;--scarf:#F2F4F1;--trim:#D9593B;--item:#F2F4F1"/>
+    <!-- передний гребень -->
+    <path fill="#F2F4F1" d="M0 560 L0 520 C300 495 560 530 860 510 C1100 495 1280 515 1440 500 L1440 560 Z"/>
+  </svg>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="eyebrow">Домашняя кухня</div>
+      <h1>Домашняя еда ручной работы</h1>
+      <p>Манты, пельмени, курзе, долма, чуду, кутабы, салаты и торты на заказ. Заказы принимаем за 2–3 дня.</p>
+      <div class="actions">
+        <a class="btn" href="#catalog">Смотреть меню</a>
+        <button class="btn ghost" type="button" data-open-cart>Открыть корзину</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="catalog">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">Меню</div>
+      <h2>Вкусная, домашняя и полезная еда</h2>
+      <p>Цены указаны за килограмм или за штуку. Всё готовится вручную.</p>
+    </div>
+    <nav class="jump" id="jump" aria-label="Разделы меню"></nav>
+    <div id="menu"></div>
+    <p class="rules">
+      <span><b>Заказы:</b> за 2–3 дня</span>
+      <span><b>Блинчики:</b> от 20 штук</span>
+      <span><b>Доставка:</b> по тарифу такси или самовывоз</span>
+    </p>
+  </div>
+</section>
+
+<section class="section alt" id="serve">
+  <div class="wrap">
+    <div class="head" style="margin-bottom:44px">
+      <div class="eyebrow">Как заказать</div>
+      <h2>Три шага до стола</h2>
+    </div>
+    <div class="cols">
+      <div class="col">
+        <span class="num">ШАГ 1</span>
+        <h3>Соберите корзину</h3>
+        <p>Выберите блюда и вес. Блюда на вес добавляются по килограмму, блинчики от 20 штук. Если нужно другое количество, напишите об этом в сообщении.</p>
+      </div>
+      <div class="col">
+        <span class="num">ШАГ 2</span>
+        <h3>Закажите за 2–3 дня</h3>
+        <p>Нажмите WhatsApp или Telegram: откроется чат с нами и готовым сообщением. Дату и способ получения уточним в чате. Торты с разными начинками и декором делаем по запросу.</p>
+      </div>
+      <div class="col">
+        <span class="num">ШАГ 3</span>
+        <h3>Заберите или закажите доставку</h3>
+        <p>Самовывоз или доставка по тарифу такси.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <svg class="scene" aria-hidden="true" focusable="false" viewBox="0 0 1440 300" preserveAspectRatio="xMaxYMax slice" style="--dress:#2B5649;--scarf:#2B5649;--skin:#2B5649;--item:#2B5649;--trim:#2B5649;--shawl:#2B5649;--wood:#2B5649;--line:transparent;--shadow:transparent">
+    <path fill="#1A3A32" d="M0 300 L0 210 L110 170 L200 205 L310 140 L400 195 L520 120 L620 190 L720 150 L840 200 L960 110 L1060 180 L1160 100 L1260 170 L1350 130 L1440 185 L1440 300 Z"/>
+    <path fill="#1F4239" d="M0 300 L0 252 C300 237 600 264 900 247 C1100 236 1290 240 1440 242 L1440 300 Z"/>
+    <use href="#wB" transform="translate(1090 262) scale(.85)"/>
+    <use href="#wA" transform="translate(1175 260) scale(.9)"/>
+    <use href="#wC" transform="translate(1265 258) scale(.85)"/>
+    <use href="#wA" transform="translate(1330 262) scale(.45)"/>
+  </svg>
+  <div class="wrap">
+    <div class="eyebrow">О нас</div>
+    <p class="lead">Так называют женщину гор. Мы взяли это слово для еды, которую готовят основательно и накрывают на весь стол.</p>
+    <p class="sub">Вкусная, домашняя и полезная еда ручной работы: от мантов и пельменей до салатов, пахлавы и тортов на заказ.</p>
+  </div>
+</section>
+
+<section class="section" id="buy">
+  <div class="wrap">
+    <div class="head" style="margin-bottom:44px">
+      <div class="eyebrow">Контакты</div>
+      <h2>Доставка и самовывоз</h2>
+    </div>
+    <div class="cols">
+      <div class="col">
+        <h3>Самовывоз</h3>
+        <p class="muted">Адрес самовывоза уточняйте по телефону или в мессенджере.</p>
+      </div>
+      <div class="col">
+        <h3>Доставка</h3>
+        <p class="muted">По тарифу такси. Стоимость зависит от адреса и оплачивается отдельно.</p>
+      </div>
+      <div class="col">
+        <h3>Звоните или пишите</h3>
+        <p><a href="tel:+79267383875" style="font-weight:600;font-size:20px;white-space:nowrap">+7 926 738-38-75</a></p>
+        <div class="chips">
+          <a class="chip" href="https://wa.me/79267383875" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="chip" href="https://t.me/+79267383875" target="_blank" rel="noopener">Telegram</a>
+        </div>
+        <p class="muted" style="font-size:15px">Ответим на любые вопросы.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <b>Горянка</b>
+    <span><a href="tel:+79267383875" style="white-space:nowrap">+7 926 738-38-75</a> · <a href="https://wa.me/79267383875" target="_blank" rel="noopener">WhatsApp</a> · <a href="https://t.me/+79267383875" target="_blank" rel="noopener">Telegram</a> · © 2026</span>
+  </div>
+</footer>
+
+<!-- Корзина -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" inert>
+  <div class="d-head">
+    <h2 id="drawerTitle">Корзина</h2>
+    <button class="x" id="closeCart" type="button" aria-label="Закрыть корзину">×</button>
+  </div>
+
+  <div class="d-body">
+    <ul class="lines" id="lines"></ul>
+    <div class="empty" id="empty">
+      <p style="margin:0">В корзине пока пусто.</p>
+      <button class="btn" type="button" id="toCatalog">Перейти в меню</button>
+    </div>
+  </div>
+  <div class="d-foot" id="cartFoot">
+    <div class="total"><span>Итого</span><strong id="total">0 ₽</strong></div>
+    <p class="note">Сумма предварительная. Заказы принимаем за 2–3 дня. Самовывоз или доставка по тарифу такси, это уточним в чате.</p>
+    <p class="send-title">Отправить заказ через</p>
+    <div class="stack">
+      <a class="btn" id="waLink" href="#" target="_blank" rel="noopener">Заказать в WhatsApp</a>
+      <a class="btn ghost" id="tgLink" href="#" target="_blank" rel="noopener">Заказать в Telegram</a>
+    </div>
+    <div class="status" id="copyStatus" role="status"></div>
+    <button class="link" type="button" id="clearCart">Очистить корзину</button>
+  </div>
+</aside>
+
+<script>
+(function () {
+  'use strict';
+
+  var PHONE = '79267383875';              // номер для ссылок WhatsApp и Telegram
+  var TG_USER = '';                       // имя в Telegram без @, например 'goryanka'. С ним готовый текст подставляется надёжнее
+  var STORE_KEY = 'goryanka-cart-v3';
+  var MAX_QTY = 99;
+
+  var CATS = [
+    { id: 'dumplings', title: 'Манты, пельмени, хинкал' },
+    { id: 'kurze',     title: 'Курзе' },
+    { id: 'meat',      title: 'Мясные блюда' },
+    { id: 'pancakes',  title: 'Блинчики' },
+    { id: 'hot',       title: 'Горячее' },
+    { id: 'salads',    title: 'Салаты' },
+    { id: 'sweet',     title: 'Сладкое' }
+  ];
+
+  // kv: на вес, шаг 1 кг (другое количество клиент уточняет в сообщении). pv: поштучно.
+  function kv(id, label, full, price, desc) {
+    return { id: id, label: label, full: full, desc: desc || '', price: price, unit: 'kg', min: 1, step: 1 };
+  }
+  function pv(id, label, full, price, desc, min, step) {
+    return { id: id, label: label, full: full, desc: desc || '', price: price, unit: 'pc', min: min || 1, step: step || 1 };
+  }
+  function dish(id, cat, name, variants) { return { id: id, cat: cat, name: name, variants: variants }; }
+  function one(id, cat, name, price, desc) { return dish(id, cat, name, [kv(id, '', name, price, desc)]); }
+
+  var DISHES = [
+    dish('manty', 'dumplings', 'Манты', [
+      kv('manty-meat',    'Без картошки', 'Манты без картошки', 900, 'Мясо, лук'),
+      kv('manty-potato',  'С картошкой',  'Манты с картошкой', 800),
+      kv('manty-pumpkin', 'С тыквой',     'Манты с тыквой', 650)
+    ]),
+    dish('pelmeni', 'dumplings', 'Пельмени', [
+      kv('pelm-beef',    'С говядиной',      'Пельмени с говядиной', 800),
+      kv('pelm-chicken', 'С куриным мясом',  'Пельмени с куриным мясом', 650)
+    ]),
+    one('dyushpere', 'dumplings', 'Дюшпере', 900, 'Очень маленькие пельмени для супа'),
+    dish('hinkal', 'dumplings', 'Хинкал', [
+      kv('hinkal-lez',   'Лезгинский', 'Хинкал лезгинский', 400, 'Тонкий, замороженный'),
+      kv('hinkal-layer', 'Слоёный',    'Слоёный хинкал', 500)
+    ]),
+    one('galushki', 'dumplings', 'Галушки', 400),
+
+    dish('kurze', 'kurze', 'Курзе', [
+      kv('kurze-beef',    'С говядиной',       'Курзе с говядиной', 800),
+      kv('kurze-chicken', 'С куриным мясом',   'Курзе с куриным мясом', 650),
+      kv('kurze-potato',  'С картошкой',       'Курзе с картошкой', 600, 'Можно и без лука, по желанию'),
+      kv('kurze-cottage', 'С творогом и зеленью', 'Курзе с творогом и зеленью', 650)
+    ]),
+
+    one('tefteli',  'meat', 'Тефтели', 700, 'Говяжий фарш, рис, лук'),
+    one('dolma',    'meat', 'Долма', 850, 'В виноградных листьях'),
+    one('golubtsy', 'meat', 'Голубцы', 850),
+    one('pepper',   'meat', 'Перец фаршированный', 900),
+    one('kotlety',  'meat', 'Куриные котлеты', 650),
+
+    dish('blini', 'pancakes', 'Блинчики', [
+      pv('blini-plain',   'Без начинки', 'Блинчики без начинки', 35, 'Заказ от 20 штук', 20, 5),
+      pv('blini-meat',    'С мясом',     'Блинчики с мясом', 70, 'Заказ от 20 штук', 20, 5),
+      pv('blini-cottage', 'С творогом',  'Блинчики с творогом', 60, 'Заказ от 20 штук', 20, 5)
+    ]),
+
+    dish('chudu', 'hot', 'Чуду', [
+      pv('chudu-2',        'В два слоя',  'Чуду в два слоя', 1500, 'Фарш, картошка, лук'),
+      pv('chudu-1',        'В один слой', 'Чуду в один слой', 800, 'Фарш, картошка, лук'),
+      kv('chudu-mushroom', 'С грибами',   'Чуду с грибами', 700, 'Грибы, лук, картошка')
+    ]),
+    dish('kutab', 'hot', 'Кутаб', [
+      pv('kutab-pumpkin', 'С тыквой',  'Кутаб с тыквой', 350, 'Тыква, лук'),
+      pv('kutab-cottage', 'С творогом', 'Кутаб с творогом', 350, 'Творог, зелень, лук'),
+      pv('kutab-cheese',  'С сыром',   'Кутаб с сыром', 450, 'Сыр, картошка')
+    ]),
+
+    one('olivier',  'salads', 'Оливье', 1300, 'Яйцо, картошка, колбаса или ветчина (без свинины), горошек, солёные огурцы, морковь, майонез'),
+    one('crab',     'salads', 'Крабовый', 1000, 'Крабовые палочки, кукуруза, огурец, рис, майонез'),
+    one('nest',     'salads', 'Гнёздышко', 1300, 'Копчёная курица, картофельные чипсы, морковь по-корейски, зелень, майонез'),
+    one('vinegret', 'salads', 'Винегрет', 1100, 'Картошка, морковь, фасоль, свёкла, солёные огурцы. Квашеная капуста по желанию'),
+    one('layered',  'salads', 'Слоёный салат с курицей', 1300, 'Варёная курица, жареные грибы и лук, майонез'),
+
+    one('pahlava', 'sweet', 'Пахлава с грецким орехом', 2000),
+    dish('cake', 'sweet', 'Торты на заказ', [{
+      id: 'cake', label: '', full: 'Торт', desc: 'С разными начинками и разным декором. Декор оплачивается отдельно.',
+      price: 0, unit: 'kg', min: 1, step: 1, inquire: true,
+      priceText: 'от 2 000 ₽', unitText: '/ кг'
+    }])
+  ];
+
+  var V = {}, D = {}, sel = {}, added = {};
+  DISHES.forEach(function (d) {
+    D[d.id] = d;
+    d.variants.forEach(function (v) { v.dish = d.id; V[v.id] = v; });
+    sel[d.id] = { vid: d.variants[0].id, qty: d.variants[0].min };
+  });
+
+  function $(id) { return document.getElementById(id); }
+  function num(n) { return n.toLocaleString('ru-RU'); }
+  function rub(n) { return num(n) + ' ₽'; }
+  function unitLabel(v) { return v.unit === 'kg' ? 'кг' : 'шт'; }
+  function fmtQty(v, q) { return num(q) + ' ' + unitLabel(v); }
+
+  /* ---------- состояние ---------- */
+  var cart = load();
+
+  function load() {
+    var out = {};
+    try {
+      var raw = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+      Object.keys(raw).forEach(function (id) {
+        var q = parseFloat(raw[id]);
+        if (V[id] && !V[id].inquire && q >= V[id].min) out[id] = Math.min(q, MAX_QTY);
+      });
+    } catch (e) {}
+    return out;
+  }
+  function save() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(cart)); } catch (e) {}
+  }
+  function countItems() { return Object.keys(cart).length; }
+  function totalSum() {
+    return Object.keys(cart).reduce(function (s, id) { return s + cart[id] * V[id].price; }, 0);
+  }
+
+  /* ---------- меню ---------- */
+  function waAsk(text) { return 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(text); }
+
+  function stepHTML(v, q, decAct, incAct, attrs) {
+    return '<div class="step" role="group" aria-label="Количество">' +
+      '<button type="button" data-act="' + decAct + '" ' + attrs + ' aria-label="Убавить"' + (q <= v.min ? ' aria-disabled="true"' : '') + '>−</button>' +
+      '<output aria-live="polite">' + fmtQty(v, q) + '</output>' +
+      '<button type="button" data-act="' + incAct + '" ' + attrs + ' aria-label="Добавить ещё"' + (q >= MAX_QTY ? ' aria-disabled="true"' : '') + '>+</button>' +
+      '</div>';
+  }
+  // Цена в карточке считается по выбранному количеству: сумма крупно, цена за единицу мелко.
+  function priceHTML(v, q) {
+    if (v.inquire) return '<span class="price">' + v.priceText + ' <small>' + v.unitText + '</small></span>';
+    return '<span class="price-row"><span class="price">' + rub(v.price * q) + '</span>' +
+      '<small class="price-unit">' + rub(v.price) + '\u00A0/\u00A0' + unitLabel(v) + ' \u00D7 ' + fmtQty(v, q) + '</small></span>';
+  }
+  function cardInner(d) {
+    var s = sel[d.id], v = V[s.vid];
+    var h = '<h4>' + d.name + '</h4>';
+    if (d.variants.length > 1) {
+      h += '<fieldset class="vars"><legend class="sr">Начинка</legend>' + d.variants.map(function (x) {
+        return '<label class="vchip"><input type="radio" name="var-' + d.id + '" value="' + x.id + '"' + (x.id === s.vid ? ' checked' : '') + '><span>' + x.label + '</span></label>';
+      }).join('') + '</fieldset>';
+    }
+    h += '<p class="desc">' + v.desc + '</p>';
+    h += '<div class="buy">' + priceHTML(v, s.qty);
+    if (v.inquire) {
+      h += '<div class="ctl"><a class="btn" href="' + waAsk('Здравствуйте! Хочу заказать торт.') + '" target="_blank" rel="noopener">Уточнить</a></div>';
+    } else {
+      h += '<div class="ctl">' + stepHTML(v, s.qty, 'cdec', 'cinc', 'data-dish="' + d.id + '"') +
+        '<button class="btn" type="button" data-act="cadd" data-dish="' + d.id + '">' + (added[d.id] ? 'Добавлено' : 'В корзину') + '</button></div>';
+      if (cart[v.id]) h += '<p class="incart">В корзине: ' + fmtQty(v, cart[v.id]) + '</p>';
+    }
+    return h + '</div>';
+  }
+  function renderCard(id) {
+    var el = document.querySelector('[data-card="' + id + '"]');
+    if (!el) return;
+    var a = document.activeElement, key = null;
+    if (a && el.contains(a)) key = a.type === 'radio' ? 'radio' : a.getAttribute('data-act');
+    el.innerHTML = cardInner(D[id]);
+    if (key === 'radio') {
+      var r = el.querySelector('input:checked');
+      if (r) r.focus();
+    } else if (key) {
+      var t = el.querySelector('[data-act="' + key + '"]');
+      if (t) t.focus();
+    }
+  }
+  function renderAllCards() { DISHES.forEach(function (d) { renderCard(d.id); }); }
+
+  function renderCatalog() {
+    $('jump').innerHTML = CATS.map(function (c) {
+      return '<a class="chip" href="#cat-' + c.id + '">' + c.title + '</a>';
+    }).join('');
+    $('menu').innerHTML = CATS.map(function (c) {
+      var cards = DISHES.filter(function (d) { return d.cat === c.id; }).map(function (d) {
+        return '<article class="card" data-card="' + d.id + '">' + cardInner(d) + '</article>';
+      }).join('');
+      return '<div class="cat" id="cat-' + c.id + '"><h3 class="cat-title">' + c.title + '</h3><div class="items">' + cards + '</div></div>';
+    }).join('');
+  }
+
+  /* ---------- корзина ---------- */
+  function renderLines() {
+    var ids = Object.keys(cart);
+    $('lines').innerHTML = ids.map(function (id) {
+      var v = V[id], q = cart[id];
+      return '<li class="line">' +
+        '<div class="line-top"><div><div class="line-name">' + v.full + '</div>' +
+        '<div class="line-w">' + rub(v.price) + ' / ' + unitLabel(v) + '</div></div>' +
+        '<div class="line-sum">' + rub(v.price * q) + '</div></div>' +
+        '<div class="line-bot">' + stepHTML(v, q, 'dec', 'inc', 'data-id="' + id + '"') +
+        '<button class="link" type="button" data-act="remove" data-id="' + id + '">Убрать</button></div>' +
+        '</li>';
+    }).join('');
+    var has = ids.length > 0;
+    $('empty').style.display = has ? 'none' : 'flex';
+    $('cartFoot').style.display = has ? 'flex' : 'none';
+    $('total').textContent = rub(totalSum());
+    refreshLinks();
+  }
+  function renderBadge() {
+    var n = countItems();
+    var c = $('count');
+    c.textContent = n;
+    c.setAttribute('data-zero', n === 0 ? 'true' : 'false');
+    $('openCart').setAttribute('aria-label', 'Корзина, позиций: ' + n);
+  }
+  function update(vid) {
+    if (vid && V[vid]) renderCard(V[vid].dish); else renderAllCards();
+    renderLines();
+    renderBadge();
+    save();
+  }
+
+  // изменения внутри окна корзины
+  function change(act, id) {
+    var v = V[id];
+    var cur = cart[id] || 0;
+    var q = cur;
+    if (act === 'inc') q = Math.min(cur + v.step, MAX_QTY);
+    else if (act === 'dec') q = cur - v.step;
+    else if (act === 'remove') q = 0;
+    if (q >= v.min) cart[id] = q; else delete cart[id];
+  }
+
+  // действия в карточке меню
+  function cardAction(act, dishId) {
+    var s = sel[dishId], v = V[s.vid];
+    if (act === 'cinc') {
+      s.qty = Math.min(s.qty + v.step, MAX_QTY);
+      renderCard(dishId);
+    } else if (act === 'cdec') {
+      s.qty = Math.max(s.qty - v.step, v.min);
+      renderCard(dishId);
+    } else if (act === 'cadd') {
+      cart[v.id] = Math.min((cart[v.id] || 0) + s.qty, MAX_QTY);
+      added[dishId] = true;
+      setTimeout(function () { delete added[dishId]; renderCard(dishId); }, 1500);
+      update(v.id);
+    }
+  }
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-act]');
+    if (!btn) return;
+    if (btn.getAttribute('aria-disabled') === 'true') return;
+    var act = btn.getAttribute('data-act');
+    var dishId = btn.getAttribute('data-dish');
+    if (dishId) { cardAction(act, dishId); return; }
+    var id = btn.getAttribute('data-id');
+    change(act, id);
+    update(id);
+    var target = document.querySelector('.drawer [data-act="' + act + '"][data-id="' + id + '"]') || $('closeCart');
+    target.focus();
+  });
+
+  // выбор начинки
+  document.addEventListener('change', function (e) {
+    var r = e.target;
+    if (!r.matches || !r.matches('input[type="radio"][name^="var-"]')) return;
+    var dishId = r.name.replace('var-', '');
+    var s = sel[dishId];
+    if (!s || !V[r.value]) return;
+    s.vid = r.value;
+    s.qty = V[r.value].min;
+    renderCard(dishId);
+  });
+
+  /* ---------- окно корзины ---------- */
+  var drawer = $('drawer'), scrim = $('scrim'), lastFocus = null;
+
+  function openCart() {
+    lastFocus = document.activeElement;
+    renderLines();
+    drawer.inert = false;
+    drawer.classList.add('open');
+    scrim.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    $('closeCart').focus();
+  }
+  function closeCart() {
+    drawer.classList.remove('open');
+    scrim.classList.remove('open');
+    drawer.inert = true;
+    document.body.style.overflow = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  $('openCart').addEventListener('click', openCart);
+  document.querySelectorAll('[data-open-cart]').forEach(function (b) { b.addEventListener('click', openCart); });
+  $('closeCart').addEventListener('click', closeCart);
+  scrim.addEventListener('click', closeCart);
+  $('toCatalog').addEventListener('click', function () {
+    closeCart();
+    var c = $('catalog');
+    if (c) c.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (!drawer.classList.contains('open')) return;
+    if (e.key === 'Escape') { closeCart(); return; }
+    if (e.key !== 'Tab') return;
+    var f = drawer.querySelectorAll('a[href],button:not([disabled]),input,textarea');
+    var list = Array.prototype.filter.call(f, function (el) { return el.offsetParent !== null; });
+    if (!list.length) return;
+    var first = list[0], last = list[list.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  /* ---------- отправка заказа ---------- */
+  function buildOrderText() {
+    var lines = ['Здравствуйте! Хочу заказать:', ''];
+    Object.keys(cart).forEach(function (id) {
+      var v = V[id], q = cart[id];
+      lines.push('• ' + v.full + ' × ' + fmtQty(v, q) + ' = ' + rub(v.price * q));
+    });
+    lines.push('', 'Итого: ' + rub(totalSum()), '', 'Прошу подтвердить заказ и сообщить, когда его можно получить.');
+    return lines.join('\n');
+  }
+
+  function refreshLinks() {
+    if (!countItems()) return;
+    var enc = encodeURIComponent(buildOrderText());
+    $('waLink').setAttribute('href', 'https://wa.me/' + PHONE + '?text=' + enc);
+    $('tgLink').setAttribute('href', 'https://t.me/' + (TG_USER || '+' + PHONE) + '?text=' + enc);
+  }
+
+  // Telegram не всегда подставляет текст сам, поэтому копируем заказ перед переходом.
+  $('tgLink').addEventListener('click', function () {
+    var st = $('copyStatus');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(buildOrderText()).then(function () {
+        st.textContent = 'Заказ скопирован. Если сообщение не появилось в поле ввода Telegram, вставьте его.';
+      }, function () { st.textContent = ''; });
+    }
+  });
+  $('waLink').addEventListener('click', function () { $('copyStatus').textContent = ''; });
+
+  $('clearCart').addEventListener('click', function () {
+    cart = {};
+    $('copyStatus').textContent = '';
+    update();
+    $('closeCart').focus();
+  });
+
+  /* ---------- старт ---------- */
+  renderCatalog();
+  renderLines();
+  renderBadge();
+})();
+</script>
+</body>
+</html>
